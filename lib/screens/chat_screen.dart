@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gemini_chatbot/models/chat_message.dart';
+import 'package:gemini_chatbot/providers/theme_provider.dart';
 import 'package:gemini_chatbot/widgets/chat_bubble.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
   @override
+  // ignore: library_private_types_in_public_api
   _ChatScreenState createState() => _ChatScreenState();
 }
 
@@ -47,7 +50,6 @@ class _ChatScreenState extends State<ChatScreen> {
       });
       return;
     }
-
     setState(() {
       _messages.add(ChatMessage(text: message, isUser: true));
       _isLoading = true;
@@ -93,13 +95,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // final provider = Provider.of<Themeprovider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.blue[200],
+        backgroundColor: Colors.blue[300],
         title: Text(
           'Gemini Chatbot',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -112,6 +115,16 @@ class _ChatScreenState extends State<ChatScreen> {
             },
             tooltip: 'Clear cache and history',
           ),
+          IconButton(
+            onPressed: () {
+              Provider.of<Themeprovider>(context, listen: false).toggleTheme();
+            },
+            icon: Icon(
+              Provider.of<Themeprovider>(context, listen: false).isDarkMode
+                  ? Icons.light_mode
+                  : Icons.dark_mode,
+            ),
+          ),
         ],
       ),
       body: Padding(
@@ -121,7 +134,8 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: ListView.builder(
-                padding: EdgeInsets.all(8),
+                scrollDirection: Axis.vertical,
+                padding: EdgeInsets.all(10),
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {
                   return ChatBubble(
@@ -140,14 +154,19 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: _messageController,
                       decoration: InputDecoration(
-                        hintText: "Type a message...",
-                        border: OutlineInputBorder(),
+                        hintText: "Message Gemini",
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                       ),
                       onSubmitted: (_) => _sendMessage(),
+                      style: TextStyle(fontSize: 16),
                     ),
                   ),
-                  SizedBox(width: 8),
+                  SizedBox(width: 15),
                   FloatingActionButton.small(
+                    backgroundColor: Colors.blue,
                     onPressed: _sendMessage,
                     child: Icon(Icons.send),
                   ),

@@ -27,6 +27,12 @@ A Flutter-based chatbot application powered by Google's Gemini AI (using gemini-
 - Google Gemini API key
 - Dart (>=3.0.0)
 
+## Dependencies
+http: ^1.5.0 
+google_generative_ai: ^0.4.7
+flutter_dotenv: ^5.2.1
+provider: ^6.1.5
+
 ## Folder Structure
 
 ├── lib/
@@ -34,8 +40,8 @@ A Flutter-based chatbot application powered by Google's Gemini AI (using gemini-
 | | ├── chatmessage.dart
 │ ├── widgets/
 | | ├── chat_bubble.dart
-│ ├── easyconst/
-│ │ ├── color.dart #constant color values used for the
+│ ├── providers/
+│ │ ├──theme_provider.dart
 │ ├── screens/
 │ │ ├── chat_screen.dart
 │ ├── main.dart #main entry
@@ -49,7 +55,12 @@ A Flutter-based chatbot application powered by Google's Gemini AI (using gemini-
 
    ```
 
+   ```
+
 2. **Configure Environment**:
+   /Gemini_Chatbot/.env //create .env if not present
+   GEMINI_API_KEY=your_api_key_here //inside .env
+   or
 
    ```bash
    echo "GEMINI_API_KEY=your_api_key_here" > .env
