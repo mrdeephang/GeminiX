@@ -10,7 +10,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<Themeprovider>(create: (_) => Themeprovider()),
+        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
       ],
       child: MyApp(),
     ),
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Gemini Chatbot',
-      theme: Provider.of<Themeprovider>(context).currentTheme,
+      theme: Provider.of<ThemeProvider>(context).currentTheme,
       home: ChatScreen(),
       debugShowCheckedModeBanner: false,
     );

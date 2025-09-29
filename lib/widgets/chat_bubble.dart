@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gemini_chatbot/providers/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class ChatBubble extends StatelessWidget {
   final String message;
@@ -8,16 +10,46 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Provider.of<ThemeProvider>(
+      context,
+      listen: false,
+    ).isDarkMode;
+
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: isUser ? Colors.blue : Colors.grey[600],
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Text(message, style: TextStyle(fontSize: 18)),
+      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+      child: Row(
+        mainAxisAlignment: isUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
+        children: [
+          Flexible(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              decoration: BoxDecoration(
+                color: isUser
+                    ? isDarkMode
+                          ? Colors.blue[700]
+                          : Colors.blue[500]
+                    : isDarkMode
+                    ? Colors.grey[800]
+                    : Colors.grey[500],
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(
+                  width: 1,
+                  color: Colors.grey.withOpacity(0.3),
+                ),
+              ),
+              child: Text(
+                message,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  height: 1.4,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

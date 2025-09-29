@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gemini_chatbot/const/colors.dart';
 import 'package:gemini_chatbot/models/chat_message.dart';
 import 'package:gemini_chatbot/providers/theme_provider.dart';
 import 'package:gemini_chatbot/widgets/chat_bubble.dart';
@@ -9,17 +10,17 @@ import 'package:provider/provider.dart';
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
   @override
-  // ignore: library_private_types_in_public_api
-  _ChatScreenState createState() => _ChatScreenState();
+  ChatScreenState createState() => ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final List<ChatMessage> _messages = [];
   bool _isLoading = false;
-  final Map<String, String> _responseCache = {}; // Cache storage
+  final Map<String, String> _responseCache = {};
   int _apiCallCount = 0;
   DateTime? _lastApiCallTime;
+  final ScrollController _scrollController = ScrollController();
 
   Future<void> _sendMessage() async {
     final message = _messageController.text.trim();
@@ -33,6 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
         );
       });
       _messageController.clear();
+      _scrollToBottom();
       return;
     }
 
@@ -48,8 +50,10 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         );
       });
+      _scrollToBottom();
       return;
     }
+
     setState(() {
       _messages.add(ChatMessage(text: message, isUser: true));
       _isLoading = true;
@@ -58,9 +62,8 @@ class _ChatScreenState extends State<ChatScreen> {
     _lastApiCallTime = now;
 
     try {
-      // Initialize model (using latest recommended version)
       final model = GenerativeModel(
-        model: 'gemini-1.5-flash', // More quota-efficient model
+        model: 'gemini-flash-latest',
         apiKey: dotenv.env['GEMINI_API_KEY']!,
       );
 
@@ -72,8 +75,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
       final response = await model.generateContent([Content.text(message)]);
       final responseText = response.text ?? "I didn't understand that";
-
-      // Cache the response
       _responseCache[message] = responseText;
 
       setState(() {
@@ -90,52 +91,66 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     } finally {
       setState(() => _isLoading = false);
+      _scrollToBottom();
     }
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // final provider = Provider.of<Themeprovider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.blue[300],
+        foregroundColor: Colors.white,
+        backgroundColor: themeProvider.isDarkMode
+            ? darkColor
+            : Colors.blue[600],
         title: Text(
           'Gemini Chatbot',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: Icon(Icons.delete_outline),
             onPressed: () {
               setState(() {
                 _responseCache.clear();
                 _messages.clear();
               });
             },
-            tooltip: 'Clear cache and history',
+            tooltip: 'Clear chat',
           ),
           IconButton(
             onPressed: () {
-              Provider.of<Themeprovider>(context, listen: false).toggleTheme();
+              themeProvider.toggleTheme();
             },
             icon: Icon(
-              Provider.of<Themeprovider>(context, listen: false).isDarkMode
-                  ? Icons.light_mode
-                  : Icons.dark_mode,
+              themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
             ),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12),
               child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                padding: EdgeInsets.all(10),
+                controller: _scrollController,
+                padding: EdgeInsets.symmetric(vertical: 8),
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {
                   return ChatBubble(
@@ -145,36 +160,95 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
               ),
             ),
-            if (_isLoading) LinearProgressIndicator(),
+          ),
+          if (_isLoading)
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: LinearProgressIndicator(),
+            ),
+          Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: themeProvider.isDarkMode
+                  ? Colors.grey[900]
+                  : Colors.grey[100],
+              border: Border(
+                top: BorderSide(color: Colors.grey.withOpacity(0.2), width: 1),
+              ),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 2,
+                          offset: Offset(0, 1),
+                        ),
+                      ],
+                    ),
                     child: TextField(
                       controller: _messageController,
                       decoration: InputDecoration(
-                        hintText: "Message Gemini",
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide(color: Colors.transparent),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide(
+                            color: Colors.blueAccent,
+                            width: 2,
+                          ),
+                        ),
+                        filled: true,
+                        fillColor:
+                            Provider.of<ThemeProvider>(
+                              context,
+                              listen: false,
+                            ).isDarkMode
+                            ? Colors.black
+                            : Colors.grey[100],
+                        hintText: "Ask Gemini...",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 20,
                         ),
                       ),
                       onSubmitted: (_) => _sendMessage(),
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
-                  SizedBox(width: 15),
-                  FloatingActionButton.small(
-                    backgroundColor: Colors.blue,
-                    onPressed: _sendMessage,
-                    child: Icon(Icons.send),
+                ),
+                SizedBox(width: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    color: themeProvider.isDarkMode
+                        ? darkColor
+                        : Colors.blue[600],
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                  child: IconButton(
+                    onPressed: _sendMessage,
+                    icon: Icon(Icons.send, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -182,6 +256,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     _messageController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 }
