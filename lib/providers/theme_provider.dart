@@ -16,7 +16,7 @@ class ThemeProvider extends ChangeNotifier {
       _isDarkMode = prefs.getBool('isDarkMode') ?? false;
       notifyListeners();
     } catch (e) {
-      // print('Error loading theme: $e');s
+      // print('Error loading theme: $e');
       _isDarkMode = false;
     }
   }

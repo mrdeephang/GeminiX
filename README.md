@@ -1,4 +1,4 @@
-# Gemini Chatbot (Flutter)
+# GeminiX
 
 A Flutter-based chatbot application powered by Google's Gemini AI (using gemini-1.5-flash model). This app features intelligent conversation capabilities with response caching and rate limiting.
 
@@ -14,7 +14,7 @@ A Flutter-based chatbot application powered by Google's Gemini AI (using gemini-
 ## Features
 
 - 💬 Real-time conversation with Gemini AI
-- 🚀 Uses efficient gemini-1.5-flash model
+- 🚀 Uses efficient gemini-flash-latest model
 - 📦 Response caching to reduce API calls
 - ⏱️ Built-in rate limiting
 - 🎨 Clean, modern UI with themed chat bubbles
@@ -28,7 +28,8 @@ A Flutter-based chatbot application powered by Google's Gemini AI (using gemini-
 - Dart (>=3.0.0)
 
 ## Dependencies
-http: ^1.5.0 
+
+http: ^1.5.0
 google_generative_ai: ^0.4.7
 flutter_dotenv: ^5.2.1
 provider: ^6.1.5
@@ -76,8 +77,8 @@ provider: ^6.1.5
 **Clone the repository**:
 
 ```bash
-git clone https://github.com/mrdeephang/FlutterPortfolio.git
-cd flutter-portfolio
+git clone https://github.com/mrdeephang/https://github.com/mrdeephang/GeminiX.git
+cd GeminiX
 flutter pub get
 flutter run or Ctrl + F5
 
