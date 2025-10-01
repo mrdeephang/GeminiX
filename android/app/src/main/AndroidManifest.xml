@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="gemini_chatbot"
+        android:label="GeminiX"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

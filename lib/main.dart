@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Gemini Chatbot',
+      title: 'GeminiX',
       theme: Provider.of<ThemeProvider>(context).currentTheme,
       home: ChatScreen(),
       debugShowCheckedModeBanner: false,

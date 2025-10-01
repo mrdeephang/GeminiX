@@ -118,10 +118,7 @@ class ChatScreenState extends State<ChatScreen> {
         backgroundColor: themeProvider.isDarkMode
             ? darkColor
             : Colors.blue[600],
-        title: Text(
-          'Gemini Chatbot',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
+        title: Text('GeminiX', style: TextStyle(fontWeight: FontWeight.w600)),
         actions: [
           IconButton(
             icon: Icon(Icons.delete_outline),
@@ -213,7 +210,7 @@ class ChatScreenState extends State<ChatScreen> {
                             ).isDarkMode
                             ? Colors.black
                             : Colors.grey[100],
-                        hintText: "Ask Gemini...",
+                        hintText: "Ask GeminiX...",
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(
                           vertical: 12,
