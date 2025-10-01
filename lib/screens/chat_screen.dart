@@ -135,7 +135,7 @@ class ChatScreenState extends State<ChatScreen> {
               themeProvider.toggleTheme();
             },
             icon: Icon(
-              themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+              themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
             ),
           ),
         ],

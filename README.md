@@ -2,6 +2,10 @@
 
 A Flutter-based chatbot application powered by Google's Gemini AI (using gemini-1.5-flash model). This app features intelligent conversation capabilities with response caching and rate limiting.
 
+## Screenshot
+
+<img src="https://github.com/user-attachments/assets/f099b0e5-8ce0-4702-928f-1185bac065dd" alt="Screenshot 0" width="300"/>
+
 ## 📋 Requirements
 
 - **Flutter SDK** (v3.19 or later)
