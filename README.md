@@ -1,6 +1,6 @@
 # GeminiX
 
-A Flutter-based chatbot application powered by Google's Gemini AI (using gemini-1.5-flash model). This app features intelligent conversation capabilities with response caching and rate limiting.
+A Flutter-based chatbot application powered by Google's Gemini AI.
 
 ## Screenshot
 
