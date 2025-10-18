@@ -4,7 +4,7 @@
 
 ---
 
-## 📸 Screenshot
+##  Screenshot
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/f099b0e5-8ce0-4702-928f-1185bac065dd" alt="GeminiX Chat Interface" width="300"/>
@@ -12,7 +12,7 @@
 
 ---
 
-## ✨ Features
+##  Features
 
 - 💬 **Real-time conversations** — Instant AI responses powered by Gemini
 - 🚀 **Efficient model** — Uses gemini-flash-latest for speed
@@ -24,7 +24,7 @@
 
 ---
 
-## 📋 Requirements
+##  Requirements
 
 - Flutter SDK (v3.19+)
 - Dart (v3.3+)
@@ -35,7 +35,7 @@
 
 ---
 
-## 📦 Dependencies
+##  Dependencies
 
 ```yaml
 http: ^1.5.0
@@ -46,7 +46,7 @@ provider: ^6.1.5
 
 ---
 
-## 📁 Folder Structure
+##  Folder Structure
 
 ```
 lib/
@@ -109,9 +109,9 @@ flutter run
 
 ---
 
-## 🔐 Security Note
+## Security Note
 
-⚠️ **Never commit your `.env` file!** Add it to `.gitignore`:
+ **Never commit your `.env` file!** Add it to `.gitignore`:
 
 ```
 .env
@@ -119,7 +119,7 @@ flutter run
 
 ---
 
-## 🔮 Future Enhancements
+##  Future Enhancements
 
 - 🎙️ **Voice input** — Speech-to-text integration
 - 🖼️ **Image support** — Send and analyze images
@@ -129,7 +129,7 @@ flutter run
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 **Deephang Thegim**  
 GitHub: [@mrdeephang](https://github.com/mrdeephang)
